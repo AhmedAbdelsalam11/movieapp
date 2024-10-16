@@ -14,137 +14,56 @@ import Drawer from './Component/Drawer';
 
 const App = () => {
   const [userData, setUserData] = useState(null);
-const navigate = useNavigate();
+  const navigate = useNavigate();
 
-function saveUserData() {
-const encodedToken = localStorage.getItem('userToken');
-if (encodedToken) {
-try {
-const decodedToken = jwtDecode(encodedToken);
-setUserData(decodedToken);
-} catch (error) { 
-  localStorage.removeItem('userToken');
-}
-}
-}
+  function saveUserData() {
+    const encodedToken = localStorage.getItem('userToken');
+    if (encodedToken) {
+      try {
+        const decodedToken = jwtDecode(encodedToken);
+        setUserData(decodedToken);
+      } catch (error) {
+        
+        localStorage.removeItem('userToken');
+      }
+    }
+  }
 
-useEffect(() => {
-if (localStorage.getItem('userToken')) {
-saveUserData();
-}
-}, []);
+  useEffect(() => {
+    if (localStorage.getItem('userToken')) {
+      saveUserData();
+    }
+  }, []);
 
-function logOut() {
-setUserData(null);
-localStorage.removeItem('userToken');
-navigate('/login');
-}
-
-function ProtectedRoute({ children }) {
-if (localStorage.getItem('userToken') === null) {
-return <Navigate to='/login' />;
-}
-return children;
-}
-
+  function logOut() {
+    setUserData(null);
+    localStorage.removeItem('userToken'); 
+    navigate('/login');
+  }
   
+  function ProtectedRoute({ children }) {
+    if (localStorage.getItem('userToken') === null) {
+      return <Navigate to='/login' />;
+    }
+    return children;
+  }
+
   return (
-    <>
+    <div className="App">
       <Navbar userData={userData} logOut={logOut} />
       <Drawer />
       <Routes>
-       
-
-          <Route
-            index
-            element={
-              <ProtectedRoute
-                isAllowed={userData?.jwt}
-                redirectPath="/login"
-                data={userData}
-              >
-                <Home />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/movies"
-            element={
-              <ProtectedRoute
-                isAllowed={userData?.jwt}
-                redirectPath="/login"
-                data={userData}
-              >
-                <Movies />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/people"
-            element={
-              <ProtectedRoute
-                isAllowed={userData?.jwt}
-                redirectPath="/login"
-                data={userData}
-              >
-                <People />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/tv"
-            element={
-              <ProtectedRoute
-                isAllowed={userData?.jwt}
-                redirectPath="/login"
-                data={userData}
-              >
-                <Tv />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/moviedetails/:id"
-            element={
-              <ProtectedRoute
-                isAllowed={userData?.jwt}
-                redirectPath="/login"
-                data={userData}
-              >
-                <MovieDetails />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="login"
-            element={
-              <ProtectedRoute
-                isAllowed={!userData?.jwt}
-                redirectPath="/"
-                data={userData}
-              >
-                <Login />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="register"
-            element={
-              <ProtectedRoute
-                isAllowed={!userData?.jwt}
-                redirectPath="/login"
-                data={userData}
-              >
-                <Register />
-              </ProtectedRoute>
-            }
-          />
-       
-
-
+        <Route path='/' element={<ProtectedRoute><Home /></ProtectedRoute>} />
+        <Route path='/home' element={<ProtectedRoute><Home /></ProtectedRoute>} />
+        <Route path="/movies" element={<ProtectedRoute><Movies /></ProtectedRoute>} />
+        <Route path="/people" element={<ProtectedRoute><People /></ProtectedRoute>} />
+        <Route path="/tv" element={<ProtectedRoute><Tv /></ProtectedRoute>} />
+        <Route path="/moviedetails/:id" element={<ProtectedRoute><MovieDetails /></ProtectedRoute>} />
+        <Route path="/login" element={<Login saveUserData={saveUserData} />} />
+        <Route path="/register" element={<Register />} />
         <Route path="*" element={<Notfound />} />
       </Routes>
-    </>
+    </div>
   );
 };
 
