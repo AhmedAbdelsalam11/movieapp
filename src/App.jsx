@@ -12,21 +12,15 @@ import { jwtDecode } from 'jwt-decode';
 import { Navigate, Route, Routes, useNavigate } from 'react-router-dom';
 import Drawer from './Component/Drawer';
 
+
 const App = () => {
   const [userData, setUserData] = useState(null);
   const navigate = useNavigate();
 
   function saveUserData() {
     const encodedToken = localStorage.getItem('userToken');
-    if (encodedToken) {
-      try {
-        const decodedToken = jwtDecode(encodedToken);
-        setUserData(decodedToken);
-      } catch (error) {
-        
-        localStorage.removeItem('userToken');
-      }
-    }
+    const decodedToken = jwtDecode(encodedToken);
+    setUserData(decodedToken)
   }
 
   useEffect(() => {
@@ -35,26 +29,31 @@ const App = () => {
     }
   }, []);
 
+  function ProtectedRoute({ children }) {
+    if (!localStorage.getItem('userToken')) {
+      return <Navigate to='/login' />;
+    }
+   else{
+    return children;
+   }
+  }
+
   function logOut() {
     setUserData(null);
     localStorage.removeItem('userToken'); 
     navigate('/login');
   }
   
-  function ProtectedRoute({ children }) {
-    if (localStorage.getItem('userToken') === null) {
-      return <Navigate to='/login' />;
-    }
-    return children;
-  }
 
   return (
     <div className="App">
       <Navbar userData={userData} logOut={logOut} />
       <Drawer />
+     
       <Routes>
         <Route path='/' element={<ProtectedRoute><Home /></ProtectedRoute>} />
         <Route path='/home' element={<ProtectedRoute><Home /></ProtectedRoute>} />
+       
         <Route path="/movies" element={<ProtectedRoute><Movies /></ProtectedRoute>} />
         <Route path="/people" element={<ProtectedRoute><People /></ProtectedRoute>} />
         <Route path="/tv" element={<ProtectedRoute><Tv /></ProtectedRoute>} />
@@ -66,5 +65,6 @@ const App = () => {
     </div>
   );
 };
+
 
 export default App;

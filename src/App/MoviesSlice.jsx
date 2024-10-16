@@ -10,11 +10,12 @@ export const apiSlice = createApi({
     fetchDetails: builder.query({
       query: (id) => `/movie/${id}?api_key=4e44d9029b1270a757cddc766a1bcb63&language=en-US`,
     }),
+   
   }),
 });
 
 
 export const {
   useFetchTrendingQuery,
-  useFetchDetailsQuery
+  useFetchDetailsQuery,
 } = apiSlice;

@@ -2,11 +2,9 @@ import React from 'react';
 import {  useSelector } from 'react-redux';
 import { selectWatch } from '../App/AddToWatchSlice';
 
-import '@fortawesome/fontawesome-free/css/all.min.css'; 
-
 const Navbar = ({ userData, logOut }) => {
     const { watches } = useSelector(selectWatch);
-  
+   
     
     return (
         <nav className="navbar navbar-expand-lg navbar-dark bg-transparent">
@@ -39,16 +37,16 @@ const Navbar = ({ userData, logOut }) => {
                                 <li className="nav-item">
                                     <a className="nav-link" href="/tv">TV</a>
                                 </li>
+                           
                             </>
                         )}
                     </ul>
                     <ul className="navbar-nav mb-2 mb-lg-0 ms-auto fs-5 fw-bold">
                         {userData && (
                             <>
+                              
                                 <li className="nav-item d-flex align-items-center me-2">
                                     <div 
-                                       
-                                        
                                         className="d-flex align-items-center" 
                                         data-bs-toggle="offcanvas" 
                                         data-bs-target="#offcanvasRight" 
@@ -58,6 +56,7 @@ const Navbar = ({ userData, logOut }) => {
                                         <span className='fs-4'>{watches.length}</span>
                                     </div>
                                 </li>
+                               
                                 <li className="nav-item">
                                     <span className="nav-link" onClick={logOut}>Log Out</span>
                                 </li>

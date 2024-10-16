@@ -81,7 +81,7 @@ const Register = () => {
             <input
                 value={user.name}
                 type="text"
-                name="text"
+                name="name"
                 onChange={onChangeHandler}
                 className='form-control p-2 fs-5'
                 placeholder='Name'
