@@ -19,8 +19,15 @@ const App = () => {
 
   function saveUserData() {
     const encodedToken = localStorage.getItem('userToken');
-    const decodedToken = jwtDecode(encodedToken);
-    setUserData(decodedToken)
+    if (encodedToken) {
+      try {
+        const decodedToken = jwtDecode(encodedToken);
+        setUserData(decodedToken);
+      } catch (error) {
+        
+        localStorage.removeItem('userToken');
+      }
+    }
   }
 
   useEffect(() => {
@@ -29,20 +36,19 @@ const App = () => {
     }
   }, []);
 
-  function ProtectedRoute({ children }) {
-    if (!localStorage.getItem('userToken')) {
-      return <Navigate to='/login' />;
-    }
-   else{
-    return children;
-   }
-  }
-
   function logOut() {
     setUserData(null);
     localStorage.removeItem('userToken'); 
     navigate('/login');
   }
+  
+  function ProtectedRoute({ children }) {
+    if (localStorage.getItem('userToken') === null) {
+      return <Navigate to='/login' />;
+    }
+    return children;
+  }
+
   
 
   return (

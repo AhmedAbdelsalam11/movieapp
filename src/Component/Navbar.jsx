@@ -47,7 +47,7 @@ const Navbar = ({ userData, logOut }) => {
                               
                                 <li className="nav-item d-flex align-items-center me-2">
                                     <div 
-                                        className="d-flex align-items-center" 
+                                        className="d-flex align-items-center cursor-pointer" 
                                         data-bs-toggle="offcanvas" 
                                         data-bs-target="#offcanvasRight" 
                                         aria-controls="offcanvasRight"
@@ -58,7 +58,7 @@ const Navbar = ({ userData, logOut }) => {
                                 </li>
                                
                                 <li className="nav-item">
-                                    <span className="nav-link" onClick={logOut}>Log Out</span>
+                                    <span className="nav-link cursor-pointer" onClick={logOut}>Log Out</span>
                                 </li>
                             </>
                         )}

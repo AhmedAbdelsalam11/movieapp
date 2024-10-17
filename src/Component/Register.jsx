@@ -3,7 +3,7 @@ import Joi from 'joi';
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { registerUser, selectAuth } from '../App/AuthSlice';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const Register = () => {
     const [user, setUser] = useState({
@@ -120,6 +120,9 @@ const Register = () => {
                 {isLoading ? 'Logining...' : 'Register'}
             </button>
         </form>
+        <div className='text-center fw-medium my-3 fs-5'>
+        <span>Already have an account? </span><Link to="/login">Login here.</Link>
+        </div>
      </div>
       
     );
